@@ -1,5 +1,5 @@
 import React from 'react';
-import {render,cleanup} from '@testing-library/react';
+import {render,cleanup, fireEvent} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import {UserSignupPage} from './UserSignupPage';
 
@@ -43,6 +43,29 @@ describe("UserSignupPage",() => {
             const {container} = render(<UserSignupPage/>);
             const button = container.querySelector('button')
             expect(button).toBeInTheDocument();
+        })
+        describe('Interactions',() => {
+            const changeEvent = (content) => {
+                return { 
+                        target: {
+                        value: content
+                    }
+                }
+            };
+            it('has input for displayName value into state',() => {
+                const {queryByPlaceholderText} = render(<UserSignupPage/>);
+                const displayNameInput = queryByPlaceholderText('Your display name')
+                
+                fireEvent.change(displayNameInput,changeEvent('my-display-name'));
+                expect(displayNameInput).toHaveValue('my-display-name');
+            })
+            it('has input for username value into state',() => {
+                const {queryByPlaceholderText} = render(<UserSignupPage/>);
+                const usernameinput = queryByPlaceholderText('Your username')
+                
+                fireEvent.change(usernameinput,changeEvent('my-username'));
+                expect(usernameinput).toHaveValue('my-username');
+            })
         })
     }) 
 })
